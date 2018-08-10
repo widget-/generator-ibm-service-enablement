@@ -3,21 +3,19 @@ package services
 import (
 	"errors"
 	"github.com/ibm-developer/ibm-cloud-env-golang"
-	// imports might change once the go-sdk is in a public github repo
-	"github.com/watson-developer-cloud/golang-sdk/languageTranslatorV3"
-	watson "github.com/watson-developer-cloud/golang-sdk"
+	. "github.com/watson-developer-cloud/go-sdk/languageTranslatorV3"
 )
 
 // InitializeServiceWatsonLanguageTranslator uses IBMCloudEnv to find credentials 
 // and initialize the Watson service
-func InitializeServiceWatsonLanguageTranslator() (*languageTranslatorV3.LanguageTranslatorV3, error) {
+func InitializeServiceWatsonLanguageTranslator() (*LanguageTranslatorV3, error) {
 	url, ok := IBMCloudEnv.GetString("watson_language_translator_url")
 	if !ok {
 		return nil, errors.New("unable to find watson_language_translator_url")
 	}
 
 	if apikey, ok := IBMCloudEnv.GetString("watson_language_translator_apikey"); ok {
-		return languageTranslatorV3.NewLanguageTranslatorV3(watson.Credentials{
+		return NewLanguageTranslatorV3(&ServiceCredentials{
 			ServiceURL: url,
 			Version: "2018-05-01",
 			APIkey: apikey,
@@ -31,7 +29,7 @@ func InitializeServiceWatsonLanguageTranslator() (*languageTranslatorV3.Language
 	if !ok {
 		return nil, errors.New("unable to find watson_language_translator_password")
 	}
-	return languageTranslatorV3.NewLanguageTranslatorV3(watson.Credentials{
+	return NewLanguageTranslatorV3(&ServiceCredentials{
 		ServiceURL: url,
 		Version: "2018-05-01",
 		Username: username,

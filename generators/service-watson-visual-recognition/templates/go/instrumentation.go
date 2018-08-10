@@ -3,9 +3,7 @@ package services
 import (
 	"errors"
 	"github.com/ibm-developer/ibm-cloud-env-golang"
-	// imports might change once the go-sdk is in a public github repo
-	"github.com/watson-developer-cloud/golang-sdk/visualRecognitionV3"
-	watson "github.com/watson-developer-cloud/golang-sdk"
+	. "github.com/watson-developer-cloud/go-sdk/visualRecognitionV3"
 )
 
 // InitializeServiceWatsonVisualRecognition uses IBMCloudEnv to find credentials 

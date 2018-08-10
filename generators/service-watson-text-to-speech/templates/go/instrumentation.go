@@ -3,21 +3,19 @@ package services
 import (
 	"errors"
 	"github.com/ibm-developer/ibm-cloud-env-golang"
-	// imports might change once the go-sdk is in a public github repo
-	"github.com/watson-developer-cloud/golang-sdk/textToSpeechV1"
-	watson "github.com/watson-developer-cloud/golang-sdk"
+	. "github.com/watson-developer-cloud/go-sdk/textToSpeechV1"
 )
 
 // InitializeServiceWatsonTextToSpeech uses IBMCloudEnv to find credentials 
 // and initialize the Watson service
-func InitializeServiceWatsonTextToSpeech() (*textToSpeechV1.TextToSpeechV1, error) {
+func InitializeServiceWatsonTextToSpeech() (*TextToSpeechV1, error) {
 	url, ok := IBMCloudEnv.GetString("watson_text_to_speech_url")
 	if !ok {
 		return nil, errors.New("unable to find watson_text_to_speech_url")
 	}
 
 	if apikey, ok := IBMCloudEnv.GetString("watson_text_to_speech_apikey"); ok {
-		return textToSpeechV1.NewTextToSpeechV1(watson.Credentials{
+		return NewTextToSpeechV1(&ServiceCredentials{
 			ServiceURL: url,
 			APIkey: apikey,
 		})
@@ -30,7 +28,7 @@ func InitializeServiceWatsonTextToSpeech() (*textToSpeechV1.TextToSpeechV1, erro
 	if !ok {
 		return nil, errors.New("unable to find watson_text_to_speech_password")
 	}
-	return textToSpeechV1.NewTextToSpeechV1(watson.Credentials{
+	return NewTextToSpeechV1(&ServiceCredentials{
 		ServiceURL: url,
 		Username: username,
 		Password: password,

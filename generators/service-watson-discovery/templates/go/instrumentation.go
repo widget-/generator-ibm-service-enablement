@@ -3,21 +3,19 @@ package services
 import (
 	"errors"
 	"github.com/ibm-developer/ibm-cloud-env-golang"
-	// imports might change once the go-sdk is in a public github repo
-	"github.com/watson-developer-cloud/golang-sdk/discoveryV1"
-	watson "github.com/watson-developer-cloud/golang-sdk"
+	. "github.com/watson-developer-cloud/go-sdk/discoveryV1"
 )
 
 // InitializeServiceWatsonDiscovery uses IBMCloudEnv to find credentials 
 // and initialize the Watson service
-func InitializeServiceWatsonDiscovery() (*discoveryV1.DiscoveryV1, error) {
+func InitializeServiceWatsonDiscovery() (*DiscoveryV1, error) {
 	url, ok := IBMCloudEnv.GetString("watson_discovery_url")
 	if !ok {
 		return nil, errors.New("unable to find watson_discovery_url")
 	}
 
 	if apikey, ok := IBMCloudEnv.GetString("watson_discovery_apikey"); ok {
-		return discoveryV1.NewDiscoveryV1(watson.Credentials{
+		return NewDiscoveryV1(&ServiceCredentials{
 			ServiceURL: url,
 			Version: "2018-03-05",
 			APIkey: apikey,
@@ -31,7 +29,7 @@ func InitializeServiceWatsonDiscovery() (*discoveryV1.DiscoveryV1, error) {
 	if !ok {
 		return nil, errors.New("unable to find watson_discovery_password")
 	}
-	return discoveryV1.NewDiscoveryV1(watson.Credentials{
+	return NewDiscoveryV1(&ServiceCredentials{
 		ServiceURL: url,
 		Version: "2018-03-05",
 		Username: username,
