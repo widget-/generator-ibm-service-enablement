@@ -30,13 +30,13 @@ Boilerplate code for initializing a client object for the Watson Assistant API i
 
   func main () { 
     services.Init()
-    
+
     assistant := services.WatsonAssistant
     workspaceID := "the-workspace-id-from-your-generated-service"
 
     input := InputData{Text:"hello"}
     messageOptions := NewMessageOptions(workspaceID).
-      SetInput(input).Send()
+      SetInput(input)
 
     msg, msgErr := assistant.Message(messageOptions)
     if msgErr != nil {

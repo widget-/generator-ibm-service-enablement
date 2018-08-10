@@ -8,19 +8,28 @@ import (
 
 // InitializeServiceWatsonVisualRecognition uses IBMCloudEnv to find credentials 
 // and initialize the Watson service
-func InitializeServiceWatsonVisualRecognition() (*visualRecognitionV3.VisualRecognitionV3, error) {
+func InitializeServiceWatsonVisualRecognition() (*VisualRecognitionV3, error) {
 	url, ok := IBMCloudEnv.GetString("watson_visual_recognition_url")
 	if !ok {
 		return nil, errors.New("unable to find watson_visual_recognition_url")
 	}
 
-	if apikey, ok := IBMCloudEnv.GetString("watson_visual_recognition_api_key"); ok {
-		return visualRecognitionV3.NewVisualRecognitionV3(watson.Credentials{
+	if apikey, ok := IBMCloudEnv.GetString("watson_visual_recognition_apikey"); ok {
+		return NewVisualRecognitionV3(&ServiceCredentials{
 			ServiceURL: url,
 			Version: "2018-03-19",
 			APIkey: apikey,
 		})
 	}
+
+	if api_key, ok := IBMCloudEnv.GetString("watson_visual_recognition_api_key"); ok {
+		return NewVisualRecognitionV3(&ServiceCredentials{
+			ServiceURL: url,
+			Version: "2018-03-19",
+			APIkey: api_key,
+		})
+	}
+
 	username, ok := IBMCloudEnv.GetString("watson_visual_recognition_username")
 	if !ok {
 		return nil, errors.New("unable to find watson_visual_recognition_username or watson_visual_recognition_api_key")
@@ -29,12 +38,10 @@ func InitializeServiceWatsonVisualRecognition() (*visualRecognitionV3.VisualReco
 	if !ok {
 		return nil, errors.New("unable to find watson_visual_recognition_username")
 	}
-	return visualRecognitionV3.NewVisualRecognitionV3(watson.Credentials{
+	return NewVisualRecognitionV3(&ServiceCredentials{
 		ServiceURL: url,
 		Version: "2018-03-19",
 		Username: username,
 		Password: password,
 	}) 
 }
-
-// TODO: THIS ONE IS DIFFERENT. the iam api key vs apikey. wait for the go-sdk to be completed
